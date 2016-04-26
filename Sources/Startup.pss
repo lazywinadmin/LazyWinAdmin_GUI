@@ -1,0 +1,35 @@
+﻿<File version="2">
+  <Code><![CDATA[
+function Main {
+	Param ([String]$Commandline)
+	#Note: This function starts the application
+	#Note: $Commandline contains the complete argument string passed to the packager
+	#Note: $Args contains the parsed arguments passed to the packager (Type: System.Array) 
+	#Note: To get the script directory in the Packager use: Split-Path $hostinvocation.MyCommand.path
+	#Note: To get the console output in the Packager (Windows Mode) use: $ConsoleOutput (Type: System.Collections.ArrayList)
+	#TODO: Initialize and add Function calls to forms
+	
+	if(Call-MainForm_psf -eq "OK")
+	{
+		
+	}
+	
+	$script:ExitCode = 0 #Set the exit code for the Packager
+}
+
+
+
+
+
+
+]]></Code>
+  <Assemblies>
+    <Assembly>mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</Assembly>
+    <Assembly>System, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</Assembly>
+    <Assembly>System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</Assembly>
+    <Assembly>System.Data, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</Assembly>
+    <Assembly>System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</Assembly>
+    <Assembly>System.Xml, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</Assembly>
+    <Assembly>System.Core, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</Assembly>
+  </Assemblies>
+</File>

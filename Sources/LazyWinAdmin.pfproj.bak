@@ -1,0 +1,50 @@
+﻿<Project>
+  <Version>1.0</Version>
+  <FileID>a1b130b6-d20e-4d13-a650-447c42a9287e</FileID>
+  <ProjectType>0</ProjectType>
+  <Files>
+    <File ReferenceName="" Build="0">Startup.pfs</File>
+    <File ReferenceName="Call-Global_ps1" Build="0" CommandExtension="True">Globals.ps1</File>
+    <File ReferenceName="Call-About_pff" Build="0">About.pff</File>
+    <File ReferenceName="Call-MainForm_pff" Build="0">MainForm.pff</File>
+    <File ReferenceName="Call-logs_ps1" Build="0" CommandExtension="False">logs.ps1</File>
+  </Files>
+  <Packager>
+    <General>
+      <PackageName>LazyWinAdmin_0.4</PackageName>
+      <PackageIcon>
+      </PackageIcon>
+      <ManifestCreation>1</ManifestCreation>
+      <CustomManifest>
+      </CustomManifest>
+      <Platform>1</Platform>
+      <RunSTA>0</RunSTA>
+    </General>
+    <Security>
+      <Username>
+      </Username>
+      <Password>
+      </Password>
+      <SignPackage>False</SignPackage>
+      <Certificate>
+      </Certificate>
+      <CertificatePassword>
+      </CertificatePassword>
+      <RunAs>0</RunAs>
+    </Security>
+    <Version>
+      <FileVersion>1.0.0.0</FileVersion>
+      <ProductVersion>1.0.0.0</ProductVersion>
+      <ProductName>LazyWinAdmin</ProductName>
+      <Description>
+      </Description>
+      <Company>LazyWinAdmin</Company>
+      <Copyright>LazyWinAdmin</Copyright>
+      <InternalName>LazyWinAdmin</InternalName>
+      <OriginalFileName>
+      </OriginalFileName>
+      <Comment>
+      </Comment>
+    </Version>
+  </Packager>
+</Project>

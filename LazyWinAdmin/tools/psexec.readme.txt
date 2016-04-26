@@ -1,0 +1,32 @@
+PSEXEC
+
+http://technet.microsoft.com/en-us/sysinternals/bb897553.aspx
+
+Using PsExecSee the July 2004 issue of Windows IT Pro Magazine for Mark's article that covers advanced usage of PsExec.
+
+Usage: psexec [\\computer[,computer2[,...] | @file][-u user [-p psswd]][-n s][-l][-s|-e][-x][-i [session]][-c [-f|-v]][-w directory][-d][-<priority>][-a n,n,... ] cmd [arguments]
+
+computer Direct PsExec to run the application on the computer or computers specified. If you omit the computer name PsExec runs the application on the local system and if you enter a computer name of "\\*" PsExec runs the applications on all computers in the current domain. 
+@file Directs PsExec to run the command on each computer listed in the text file specified. 
+-a Separate processors on which the application can run with commas where 1 is the lowest numbered CPU. For example, to run the application on CPU 2 and CPU 4, enter: "-a 2,4" 
+-c Copy the specified program to the remote system for execution. If you omit this option then the application must be in the system's path on the remote system. 
+-d Don't wait for application to terminate. Only use this option for non-interactive applications. 
+-e Does not load the specified account's profile. 
+-f Copy the specified program to the remote system even if the file already exists on the remote system. 
+-i Run the program so that it interacts with the desktop of the specified session on the remote system. If no session is specified the process runs in the console session. 
+-l Run process as limited user (strips the Administrators group and allows only privileges assigned to the Users group). On Windows Vista the process runs with Low Integrity. 
+-n Specifies timeout in seconds connecting to remote computers. 
+-p Specifies optional password for user name. If you omit this you will be prompted to enter a hidden password. 
+-s Run remote process in the System account. 
+-u Specifies optional user name for login to remote computer. 
+-v Copy the specified file only if it has a higher version number or is newer on than the one on the remote system. 
+-w Set the working directory of the process (relative to the remote computer). 
+-x Display the UI on the Winlogon desktop (local system only). 
+-priority Specifies -low, -belownormal, -abovenormal, -high or -realtime to run the process at a different priority. Use -background to run at low memory and I/O priority on Vista. 
+program Name of the program to execute. 
+arguments Arguments to pass (note that file paths must be absolute paths on the target system) 
+
+You can enclose applications that have spaces in their name with quotation marks e.g. "psexec \\marklap "c:\long name\app.exe". Input is only passed to the remote system when you press the enter key, and typing Ctrl-C terminates the remote process.
+
+If you omit a username the remote process runs in the same account from which you execute PsExec, but because the remote process is impersonating it will not have access to network resources on the remote system. When you specify a username the remote process executes in the account specified, and will have access to any network resources the account has access to. Note that the password is transmitted in clear text to the remote system.
+
