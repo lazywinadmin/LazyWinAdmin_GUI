@@ -4,11 +4,13 @@ This utility is very helpful for anyone managing workstations or servers. I hope
 
 The Form was created using Sapien Powershell Studio 2012.
 
-# Requirements
+![alt text](/Media/lwa-v0.4-main01.png "LazyWinAdmin")
+
+## Requirements
  * Powershell 2.0
  * Permission on the targeted System(s)
 
-# Optional tools
+## Optional tools
  * External Tools
   * SystemInfo.exe
   * DriverQuery
@@ -20,11 +22,11 @@ The Form was created using Sapien Powershell Studio 2012.
   * sydi-server.vbs - http://sydiproject.com/products/sydi-server/
   * WmiExplorer.ps1
 
-# Contributions
+## Contributions
 You are welcome to contribute.
 
 
-# VERSION HISTORY
+## Version History
 ```
 2011.06.29
 	-Added link to Powershell ISE
