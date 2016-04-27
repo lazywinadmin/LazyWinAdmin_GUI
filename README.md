@@ -1,5 +1,11 @@
+This is an old project that I worked on, released in 2012.
+There are plenty of improvment possible and you are welcome to contribute.
+
 # LazyWinAdmin_GUI
-This is a nice gui
+LazyWinAdmin is a PowerShell Script that generates a GUI/WinForms loaded with tons of functions.
+This utility is very helpful for anyone managing workstations or servers. I hope this help you in your day to day tasks.
+
+The Form was created using Sapien Powershell Studio 2012.
 
 # REQUIRED
  * Powershell 2.0
@@ -9,8 +15,12 @@ This is a nice gui
  * External Tools
   * SystemInfo.exe
   * DriverQuery
+  * AdExplorer -  http://technet.microsoft.com/en-us/sysinternals/bb963907.aspx
+  * PSExec - http://technet.microsoft.com/en-us/sysinternals/bb897553.aspx
+  * PAExec - http://www.poweradmin.com/PAExec/
+  * WMIExplorer.ps1 - http://gallery.technet.microsoft.com/scriptcenter/89c759b7-20b4-49e8-98a8-3c8fbdb2dd69
  * Scripts
-  * sydi-server.vbs
+  * sydi-server.vbs - http://sydiproject.com/products/sydi-server/
   * WmiExplorer.ps1
 
 
