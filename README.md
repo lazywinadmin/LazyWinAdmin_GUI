@@ -23,7 +23,7 @@ The Form was created using Sapien Powershell Studio 2012.
   * WmiExplorer.ps1
 
 ## Contributions
-You are welcome to contribute.
+You are welcome to contribute. Refer to the License for details.
 
 
 ## Version History
