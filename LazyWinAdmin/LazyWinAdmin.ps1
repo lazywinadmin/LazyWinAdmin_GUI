@@ -40,7 +40,7 @@ function Main {
 	#--------------------------------------------
 	# Declare Global Variables and Functions here
 	#--------------------------------------------
-	
+
 	#region Get-ComputerTxtBox
 	function Get-ComputerTxtBox
 	{	$global:ComputerName = $textbox_computername.Text}
@@ -5607,6 +5607,11 @@ function Call-MainForm_pff
 	$buttonShares = New-Object 'System.Windows.Forms.Button'
 	$buttonEventVwr = New-Object 'System.Windows.Forms.Button'
 	$button_GPupdate = New-Object 'System.Windows.Forms.Button'
+
+
+    $button_RemoteUninstall = New-Object 'System.Windows.Forms.Button'
+
+
 	$button_Applications = New-Object 'System.Windows.Forms.Button'
 	$button_ping = New-Object 'System.Windows.Forms.Button'
 	$button_remot = New-Object 'System.Windows.Forms.Button'
@@ -7044,6 +7049,90 @@ function Call-MainForm_pff
 		}
 		else {Show-MsgBox -BoxType "OKOnly" -Title "$ComputerName - Group Policy Update" -Prompt "Gpupdate does not seem to work! Are you in a Domain ?" -Icon "Exclamation"}
 	}
+
+
+
+    $button_RemoteUninstall_Click={
+        $program_to_uninstall = ""
+        #region Remote Uninstall GUI
+        $current_dir = Split-Path $script:MyInvocation.MyCommand.Path
+        $PROGRAM_OUTPUT = $current_dir + "\programs.txt"
+        Get-WmiObject Win32_Product -ComputerName $ComputerName | select name | Out-File $PROGRAM_OUTPUT
+        #Get-RemoteProgram -ComputerName $ComputerName | Out-File $PROGRAM_OUTPUT
+        $name_arr = Get-Content $PROGRAM_OUTPUT | Sort-Object
+        # Note: Edited from 
+        # https://foxdeploy.com/resources/ise-snippets/xaml-to-gui/ original XAML loader script
+        # Change contents of here string to your XAML code from Visual Studio
+        $RawXAML = @"
+<Window x:Class="WpfApplication3.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WpfApplication3"
+        mc:Ignorable="d"
+        Title="Remotely Uninstall Programs" Height="644.151" Width="532.521">
+    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+    <Grid>
+        <StackPanel x:Name="StackButtonsHere" HorizontalAlignment="Left" Margin="0,0,0,0" VerticalAlignment="Top" Width="470"/> 
+    </Grid>
+    </ScrollViewer>
+</Window>
+"@       
+
+        [void][System.Reflection.Assembly]::LoadWithPartialName('PresentationFramework')
+        [xml]$XAML = $RawXAML -replace 'mc:Ignorable="d"','' -replace "x:N",'N'  -replace '^<Win.*', '<Window'
+
+        #Read XAML 
+        $XAMLReader= New-Object System.Xml.XmlNodeReader $XAML
+        try{
+            $Form=[Windows.Markup.XamlReader]::Load($XAMLReader)
+        } catch {
+            Throw "Unable to load Windows.Markup.XamlReader. Double-check syntax and ensure .net is installed."
+        }
+
+        $XAML.SelectNodes("//*[@Name]") |
+        ForEach-Object {
+            Set-Variable -Name "WPF$($_.Name)" -Value $Form.FindName($_.Name)
+        }
+
+        Get-Variable WPF*
+
+        $counter = 0
+        foreach ($program_name in $name_arr){
+            if ($counter -gt 3){
+                if ($program_name -ne ""){
+                    $NewButton = New-Object System.Windows.Controls.Button
+                    $buttonName = "button"+[string]($counter-4)
+                    $NewButton.Name = $buttonName
+                    $NewButton.Content = $program_name.trimend()
+                    $NewButton.Height = 20
+                    $NewButton.Width = 400
+                    $NewButton.ToolTip = $program_name.trimend()
+                    $NewButton.HorizontalContentAlignment="Left"
+                    $WPFStackButtonsHere.AddChild($NewButton)
+                
+                    $AddedButton = ($WPFStackButtonsHere.Children | 
+                    Where-Object {
+                        $_.Name -eq $buttonName
+                    })
+
+                    # Add Click Event
+                    $AddedButton.Add_Click({
+                        $program_to_uninstall = $this.Content.trimend()
+                        Write-Host $program_to_uninstall
+                        Get-WmiObject Win32_Product -ComputerName $ComputerName | Where-Object{$_.name -match $program_to_uninstall } | ForEach-Object{$_.Uninstall()}
+                    })
+                }
+            }
+            $counter = $counter + 1
+        }
+        
+        $Form.ShowDialog() | Out-Null
+        #endregion
+
+    }
+
 	
 	$button_Applications_Click={
 		Get-ComputerTxtBox
@@ -7426,6 +7515,7 @@ function Call-MainForm_pff
 			$buttonShares.remove_Click($buttonShares_Click)
 			$buttonEventVwr.remove_Click($buttonEventVwr_Click)
 			$button_GPupdate.remove_Click($button_GPupdate_Click)
+            $button_RemoteUninstall.remove_Click($button_RemoteUninstall_Click)
 			$button_Applications.remove_Click($button_Applications_Click)
 			$button_ping.remove_Click($button_ping_Click)
 			$button_remot.remove_Click($button_remot_Click)
@@ -7758,7 +7848,7 @@ cMI4bmTc512jvQLAriAIyPd9Y6mAG6gAZUPR6LYBAAAAAElFTkSuQmCC')
 	$tabcontrol_computer.Multiline = $True
 	$tabcontrol_computer.Name = "tabcontrol_computer"
 	$tabcontrol_computer.SelectedIndex = 0
-	$tabcontrol_computer.Size = '1170, 137'
+	$tabcontrol_computer.Size = '2170, 137'
 	$tabcontrol_computer.TabIndex = 11
 	#
 	# tabpage_general
@@ -7768,6 +7858,7 @@ cMI4bmTc512jvQLAriAIyPd9Y6mAG6gAZUPR6LYBAAAAAElFTkSuQmCC')
 	$tabpage_general.Controls.Add($groupbox_ManagementConsole)
 	$tabpage_general.Controls.Add($button_GPupdate)
 	$tabpage_general.Controls.Add($button_Applications)
+    $tabpage_general.Controls.Add($button_RemoteUninstall)
 	$tabpage_general.Controls.Add($button_ping)
 	$tabpage_general.Controls.Add($button_remot)
 	$tabpage_general.Controls.Add($buttonRemoteAssistance)
@@ -7779,7 +7870,7 @@ cMI4bmTc512jvQLAriAIyPd9Y6mAG6gAZUPR6LYBAAAAAElFTkSuQmCC')
 	$tabpage_general.BackColor = 'Control'
 	$tabpage_general.Location = '4, 22'
 	$tabpage_general.Name = "tabpage_general"
-	$tabpage_general.Size = '1162, 111'
+	$tabpage_general.Size = '4162, 111'
 	$tabpage_general.TabIndex = 12
 	$tabpage_general.Text = "General"
 	#
@@ -7790,7 +7881,7 @@ cMI4bmTc512jvQLAriAIyPd9Y6mAG6gAZUPR6LYBAAAAAElFTkSuQmCC')
 	$groupbox_InternetExplorer.Controls.Add($button_IEHPHomepage)
 	$groupbox_InternetExplorer.Controls.Add($button_HTTPS)
 	$groupbox_InternetExplorer.Controls.Add($button_IEDellOpenManage)
-	$groupbox_InternetExplorer.Location = '992, 4'
+	$groupbox_InternetExplorer.Location = '1035, 4'
 	$groupbox_InternetExplorer.Name = "groupbox_InternetExplorer"
 	$groupbox_InternetExplorer.Size = '141, 104'
 	$groupbox_InternetExplorer.TabIndex = 51
@@ -7887,12 +7978,12 @@ xt9mqRZgsszPB9gHI9MNpiATHR4oWWT8dSb9IoB2BmFl70cKl4WMZ+JOWA/jmFXuw2oxv69GQIz3
 	$groupbox_ManagementConsole.Controls.Add($buttonServices)
 	$groupbox_ManagementConsole.Controls.Add($buttonShares)
 	$groupbox_ManagementConsole.Controls.Add($buttonEventVwr)
-	$groupbox_ManagementConsole.Location = '815, 4'
+	$groupbox_ManagementConsole.Location = '885, 4'
 	$groupbox_ManagementConsole.Name = "groupbox_ManagementConsole"
-	$groupbox_ManagementConsole.Size = '171, 77'
+	$groupbox_ManagementConsole.Size = '157, 77'
 	$groupbox_ManagementConsole.TabIndex = 49
 	$groupbox_ManagementConsole.TabStop = $False
-	$groupbox_ManagementConsole.Text = "Management Console (MMC)"
+	$groupbox_ManagementConsole.Text = "Management Console"
 	#
 	# button_mmcCompmgmt
 	#
@@ -8110,6 +8201,21 @@ EAA7')
 	$tooltipinfo.SetToolTip($button_Applications, "List Applications installed")
 	$button_Applications.UseVisualStyleBackColor = $True
 	$button_Applications.add_Click($button_Applications_Click)
+    #
+    # button_RemoteUninstall
+    #
+    $button_RemoteUninstall.Image = [System.Convert]::FromBase64String('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')
+    $button_RemoteUninstall.ImageAlign = 'TopCenter'
+    $button_RemoteUninstall.Font = "Microsoft Sans Serif, 8.25pt"
+    $button_RemoteUninstall.Location = '809, 4'
+    $button_RemoteUninstall.Name = "button_RemoteUninstall"
+    $button_RemoteUninstall.Size = '74, 77'
+    $button_RemoteUninstall.TabIndex = 0
+    $button_RemoteUninstall.Text = "Uninstall"
+    $button_RemoteUninstall.TextAlign = 'BottomCenter'
+    $tooltipinfo.SetToolTip($button_RemoteUninstall, "Remotely Uninstall Applications")
+    $button_RemoteUninstall.UseVisualStyleBackColor = $True
+    $button_RemoteUninstall.add_Click($button_RemoteUninstall_Click)
 	#
 	# button_ping
 	#
