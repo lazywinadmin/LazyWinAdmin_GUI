@@ -13,8 +13,8 @@ While LazyWinAdmin has a built-in display of installed programs, remotely uninst
 
 This fork uses WPF for the program list and WMI to query and uninstall programs.
 
-![alt text](/Media/screen2.png "LazyWinAdmin")
+![alt text](/Media/screen2.PNG "LazyWinAdmin")
 
 ## Notes
 
-If the program hangs while displaying programs or uninstalling, that's WMI, not me ¯\_(ツ)_/¯.
+If the program hangs while displaying programs or uninstalling, that's WMI, not me ¯\\_(ツ)_/¯.
