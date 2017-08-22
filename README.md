@@ -5,9 +5,16 @@ For more information on LazyWinAdmin, check out the repo [here](https://github.c
 ## What's Different?
 
 While LazyWinAdmin has a built-in display of installed programs, remotely uninstalling any of them can be tedious, and involves sending remote commands. I added a button that pulls up a list of all MSI-installed apps and allows you to uninstall any of them remotely with a single click.
+
 ![alt text](/Media/newbutton.png "LazyWinAdmin")
-![alt text](/Media/screen2.png "LazyWinAdmin")
+
 
 ## How it works
 
-This fork uses WPF for the program list and WMI to query and uninstall programs
+This fork uses WPF for the program list and WMI to query and uninstall programs.
+
+![alt text](/Media/screen2.png "LazyWinAdmin")
+
+## Notes
+
+If the program hangs while displaying programs or uninstalling, that's WMI, not me ¯\_(ツ)_/¯.
